@@ -1,0 +1,291 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: deividfortuna@gmail.com
+  description: API de Consulta Tabela FIPE fornece preços médios de veículos no mercado
+    nacional. Atualizada mensalmente com dados extraidos da tabela FIPE
+  license:
+    name: MIT
+    url: https://github.com/deividfortuna/fipe/blob/master/LICENSE.md
+  title: Fipe API
+  version: 2.0.0
+externalDocs:
+  description: Read more about FIPE API
+  url: https://github.com/deividfortuna/fipe
+servers:
+- url: https://parallelum.com.br/fipe/api/v2
+- url: http://parallelum.com.br/fipe/api/v2
+tags:
+- name: Fipe
+paths:
+  /references:
+    get:
+      description: Returns months and codes reference from Fipe
+      operationId: GetReferences
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Reference'
+                type: array
+          description: Ok
+        "500":
+          content: {}
+          description: Server Error
+      summary: Fipe month references
+      tags:
+      - Fipe
+  /{vehicleType}/brands:
+    get:
+      description: Returns brands for the type of vehicle
+      operationId: GetBrandsByType
+      parameters:
+      - description: Type of vehicle
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/NamedCode'
+                type: array
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Brands by type
+      tags:
+      - Fipe
+  /{vehicleType}/brands/{brandId}/models:
+    get:
+      description: Returns models for the brand
+      operationId: GetModelsByBrand
+      parameters:
+      - description: Type of vehicle
+        example: cars
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      - description: Brand of the vehicle
+        example: 59
+        explode: false
+        in: path
+        name: brandId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/NamedCode'
+                type: array
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Models by brand
+      tags:
+      - Fipe
+  /{vehicleType}/brands/{brandId}/models/{modelId}/years:
+    get:
+      description: Returns years for the specific model
+      operationId: GetYearByModel
+      parameters:
+      - description: Type of vehicle
+        example: cars
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      - description: Brand of the vehicle
+        example: 59
+        explode: false
+        in: path
+        name: brandId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: Model of the vehicle
+        example: 5940
+        explode: false
+        in: path
+        name: modelId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/NamedCode'
+                type: array
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Years for model
+      tags:
+      - Fipe
+  /{vehicleType}/brands/{brandId}/models/{modelId}/years/{yearId}:
+    get:
+      description: Returns the Fipe information for the vehicle (price estimation)
+      operationId: GetFipeInfo
+      parameters:
+      - description: Type of vehicle
+        example: cars
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      - description: Brand of the vehicle
+        example: 59
+        explode: false
+        in: path
+        name: brandId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: Model of the vehicle
+        example: 5940
+        explode: false
+        in: path
+        name: modelId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: Year for the vehicle
+        example: 2014-3
+        explode: false
+        in: path
+        name: yearId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Month reference code
+        example: "278"
+        explode: true
+        in: query
+        name: reference
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FipeResult'
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Fipe info
+      tags:
+      - Fipe
+components:
+  schemas:
+    VehiclesType:
+      enum:
+      - cars
+      - motorcycles
+      - trucks
+      type: string
+    FipeResult:
+      example:
+        fuelAcronym: fuelAcronym
+        referenceMonth: referenceMonth
+        price: price
+        fuel: fuel
+        codeFipe: codeFipe
+        model: model
+        modelYear: 0
+        brand: brand
+        vehicleType: 6
+      properties:
+        price:
+          description: Price in Brazilian Real
+          type: string
+        brand:
+          description: Brand of the vehicle
+          type: string
+        model:
+          description: Model of the vehicle
+          type: string
+        modelYear:
+          description: Year of vehicle production
+          format: int32
+          type: integer
+        fuel:
+          description: Fuel used by the vehicle
+          type: string
+        codeFipe:
+          description: Unique Fipe identifier
+          type: string
+        referenceMonth:
+          description: Month of the price
+          type: string
+        vehicleType:
+          description: Type of the vehicle
+          format: int32
+          type: integer
+        fuelAcronym:
+          description: Fuel acronym (eg. G)
+          type: string
+      type: object
+    NamedCode:
+      example:
+        code: code
+        name: name
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+      type: object
+    Reference:
+      example:
+        code: code
+        month: month
+      properties:
+        code:
+          type: string
+        month:
+          type: string
+      type: object
