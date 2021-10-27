@@ -1,7 +1,7 @@
 /*
 Fipe API
 
-API de Consulta Tabela FIPE fornece preços médios de veículos no mercado nacional. Atualizada mensalmente com dados extraidos da tabela FIPE
+API de Consulta Tabela FIPE fornece preços médios de veículos no mercado nacional. Atualizada mensalmente com dados extraidos da tabela FIPE.    Essa API Fipe utiliza banco de dados próprio, onde todas as requisições acontecem internamente, sem sobrecarregar o Web Service da Fipe, evitando assim bloqueios por múltiplos acessos.    A API está online desde 2015 e totalmente gratuíta. Gostaria que ele continuasse gratuíta? O que acha de me pagar uma cerveja? 🍺    [![Make a donation](https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QUPMYWH6XAC5G)   ## Available SDKs  * [Fipe Go SDK](https://pkg.go.dev/github.com/parallelum/fipe-go)  * [Fipe .NetCore Nuget SDK](https://www.nuget.org/packages/Br.Com.Parallelum.Fipe/)  * [Fipe Javascript SDK](https://github.com/deividfortuna/fipe-promise)  
 
 API version: 2.0.0
 Contact: deividfortuna@gmail.com
@@ -25,12 +25,95 @@ var (
 	_ _context.Context
 )
 
+type FipeApi interface {
+
+	/*
+	GetBrandsByType Brands by type
+
+	Returns brands for the type of vehicle
+
+	 @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	 @param vehicleType Type of vehicle
+	 @return ApiGetBrandsByTypeRequest
+	*/
+	GetBrandsByType(ctx _context.Context, vehicleType VehiclesType) ApiGetBrandsByTypeRequest
+
+	// GetBrandsByTypeExecute executes the request
+	//  @return []NamedCode
+	GetBrandsByTypeExecute(r ApiGetBrandsByTypeRequest) ([]NamedCode, *_nethttp.Response, error)
+
+	/*
+	GetFipeInfo Fipe info
+
+	Returns the Fipe information for the vehicle (price estimation)
+
+	 @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	 @param vehicleType Type of vehicle
+	 @param brandId Brand of the vehicle
+	 @param modelId Model of the vehicle
+	 @param yearId Year for the vehicle
+	 @return ApiGetFipeInfoRequest
+	*/
+	GetFipeInfo(ctx _context.Context, vehicleType VehiclesType, brandId int32, modelId int32, yearId string) ApiGetFipeInfoRequest
+
+	// GetFipeInfoExecute executes the request
+	//  @return FipeResult
+	GetFipeInfoExecute(r ApiGetFipeInfoRequest) (FipeResult, *_nethttp.Response, error)
+
+	/*
+	GetModelsByBrand Models by brand
+
+	Returns models for the brand
+
+	 @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	 @param vehicleType Type of vehicle
+	 @param brandId Brand of the vehicle
+	 @return ApiGetModelsByBrandRequest
+	*/
+	GetModelsByBrand(ctx _context.Context, vehicleType VehiclesType, brandId int32) ApiGetModelsByBrandRequest
+
+	// GetModelsByBrandExecute executes the request
+	//  @return []NamedCode
+	GetModelsByBrandExecute(r ApiGetModelsByBrandRequest) ([]NamedCode, *_nethttp.Response, error)
+
+	/*
+	GetReferences Fipe month references
+
+	Returns months and codes reference from Fipe
+
+	 @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	 @return ApiGetReferencesRequest
+	*/
+	GetReferences(ctx _context.Context) ApiGetReferencesRequest
+
+	// GetReferencesExecute executes the request
+	//  @return []Reference
+	GetReferencesExecute(r ApiGetReferencesRequest) ([]Reference, *_nethttp.Response, error)
+
+	/*
+	GetYearByModel Years for model
+
+	Returns years for the specific model
+
+	 @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	 @param vehicleType Type of vehicle
+	 @param brandId Brand of the vehicle
+	 @param modelId Model of the vehicle
+	 @return ApiGetYearByModelRequest
+	*/
+	GetYearByModel(ctx _context.Context, vehicleType VehiclesType, brandId int32, modelId int32) ApiGetYearByModelRequest
+
+	// GetYearByModelExecute executes the request
+	//  @return []NamedCode
+	GetYearByModelExecute(r ApiGetYearByModelRequest) ([]NamedCode, *_nethttp.Response, error)
+}
+
 // FipeApiService FipeApi service
 type FipeApiService service
 
 type ApiGetBrandsByTypeRequest struct {
 	ctx _context.Context
-	ApiService *FipeApiService
+	ApiService FipeApi
 	vehicleType VehiclesType
 }
 
@@ -136,7 +219,7 @@ func (a *FipeApiService) GetBrandsByTypeExecute(r ApiGetBrandsByTypeRequest) ([]
 
 type ApiGetFipeInfoRequest struct {
 	ctx _context.Context
-	ApiService *FipeApiService
+	ApiService FipeApi
 	vehicleType VehiclesType
 	brandId int32
 	modelId int32
@@ -263,7 +346,7 @@ func (a *FipeApiService) GetFipeInfoExecute(r ApiGetFipeInfoRequest) (FipeResult
 
 type ApiGetModelsByBrandRequest struct {
 	ctx _context.Context
-	ApiService *FipeApiService
+	ApiService FipeApi
 	vehicleType VehiclesType
 	brandId int32
 }
@@ -373,7 +456,7 @@ func (a *FipeApiService) GetModelsByBrandExecute(r ApiGetModelsByBrandRequest) (
 
 type ApiGetReferencesRequest struct {
 	ctx _context.Context
-	ApiService *FipeApiService
+	ApiService FipeApi
 }
 
 
@@ -475,7 +558,7 @@ func (a *FipeApiService) GetReferencesExecute(r ApiGetReferencesRequest) ([]Refe
 
 type ApiGetYearByModelRequest struct {
 	ctx _context.Context
-	ApiService *FipeApiService
+	ApiService FipeApi
 	vehicleType VehiclesType
 	brandId int32
 	modelId int32
