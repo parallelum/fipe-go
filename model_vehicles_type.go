@@ -26,7 +26,8 @@ const (
 	TRUCKS VehiclesType = "trucks"
 )
 
-var allowedVehiclesTypeEnumValues = []VehiclesType{
+// All allowed values of VehiclesType enum
+var AllowedVehiclesTypeEnumValues = []VehiclesType{
 	"cars",
 	"motorcycles",
 	"trucks",
@@ -39,7 +40,7 @@ func (v *VehiclesType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := VehiclesType(value)
-	for _, existing := range allowedVehiclesTypeEnumValues {
+	for _, existing := range AllowedVehiclesTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -56,13 +57,13 @@ func NewVehiclesTypeFromValue(v string) (*VehiclesType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for VehiclesType: valid values are %v", v, allowedVehiclesTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for VehiclesType: valid values are %v", v, AllowedVehiclesTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v VehiclesType) IsValid() bool {
-	for _, existing := range allowedVehiclesTypeEnumValues {
+	for _, existing := range AllowedVehiclesTypeEnumValues {
 		if existing == v {
 			return true
 		}
