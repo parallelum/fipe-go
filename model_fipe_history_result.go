@@ -15,13 +15,11 @@ import (
 	"encoding/json"
 )
 
-// checks if the FipeResult type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &FipeResult{}
+// checks if the FipeHistoryResult type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &FipeHistoryResult{}
 
-// FipeResult struct for FipeResult
-type FipeResult struct {
-	// Price in Brazilian Real
-	Price *string `json:"price,omitempty"`
+// FipeHistoryResult struct for FipeHistoryResult
+type FipeHistoryResult struct {
 	// Brand of the vehicle
 	Brand *string `json:"brand,omitempty"`
 	// Model of the vehicle
@@ -32,65 +30,32 @@ type FipeResult struct {
 	Fuel *string `json:"fuel,omitempty"`
 	// Unique Fipe identifier
 	CodeFipe *string `json:"codeFipe,omitempty"`
-	// Month of the price
-	ReferenceMonth *string `json:"referenceMonth,omitempty"`
 	// Type of the vehicle
 	VehicleType *int32 `json:"vehicleType,omitempty"`
 	// Fuel acronym (eg. G)
 	FuelAcronym *string `json:"fuelAcronym,omitempty"`
+	PriceHistory []HistoryEntry `json:"priceHistory,omitempty"`
 }
 
-// NewFipeResult instantiates a new FipeResult object
+// NewFipeHistoryResult instantiates a new FipeHistoryResult object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFipeResult() *FipeResult {
-	this := FipeResult{}
+func NewFipeHistoryResult() *FipeHistoryResult {
+	this := FipeHistoryResult{}
 	return &this
 }
 
-// NewFipeResultWithDefaults instantiates a new FipeResult object
+// NewFipeHistoryResultWithDefaults instantiates a new FipeHistoryResult object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewFipeResultWithDefaults() *FipeResult {
-	this := FipeResult{}
+func NewFipeHistoryResultWithDefaults() *FipeHistoryResult {
+	this := FipeHistoryResult{}
 	return &this
-}
-
-// GetPrice returns the Price field value if set, zero value otherwise.
-func (o *FipeResult) GetPrice() string {
-	if o == nil || IsNil(o.Price) {
-		var ret string
-		return ret
-	}
-	return *o.Price
-}
-
-// GetPriceOk returns a tuple with the Price field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *FipeResult) GetPriceOk() (*string, bool) {
-	if o == nil || IsNil(o.Price) {
-		return nil, false
-	}
-	return o.Price, true
-}
-
-// HasPrice returns a boolean if a field has been set.
-func (o *FipeResult) HasPrice() bool {
-	if o != nil && !IsNil(o.Price) {
-		return true
-	}
-
-	return false
-}
-
-// SetPrice gets a reference to the given string and assigns it to the Price field.
-func (o *FipeResult) SetPrice(v string) {
-	o.Price = &v
 }
 
 // GetBrand returns the Brand field value if set, zero value otherwise.
-func (o *FipeResult) GetBrand() string {
+func (o *FipeHistoryResult) GetBrand() string {
 	if o == nil || IsNil(o.Brand) {
 		var ret string
 		return ret
@@ -100,7 +65,7 @@ func (o *FipeResult) GetBrand() string {
 
 // GetBrandOk returns a tuple with the Brand field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetBrandOk() (*string, bool) {
+func (o *FipeHistoryResult) GetBrandOk() (*string, bool) {
 	if o == nil || IsNil(o.Brand) {
 		return nil, false
 	}
@@ -108,7 +73,7 @@ func (o *FipeResult) GetBrandOk() (*string, bool) {
 }
 
 // HasBrand returns a boolean if a field has been set.
-func (o *FipeResult) HasBrand() bool {
+func (o *FipeHistoryResult) HasBrand() bool {
 	if o != nil && !IsNil(o.Brand) {
 		return true
 	}
@@ -117,12 +82,12 @@ func (o *FipeResult) HasBrand() bool {
 }
 
 // SetBrand gets a reference to the given string and assigns it to the Brand field.
-func (o *FipeResult) SetBrand(v string) {
+func (o *FipeHistoryResult) SetBrand(v string) {
 	o.Brand = &v
 }
 
 // GetModel returns the Model field value if set, zero value otherwise.
-func (o *FipeResult) GetModel() string {
+func (o *FipeHistoryResult) GetModel() string {
 	if o == nil || IsNil(o.Model) {
 		var ret string
 		return ret
@@ -132,7 +97,7 @@ func (o *FipeResult) GetModel() string {
 
 // GetModelOk returns a tuple with the Model field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetModelOk() (*string, bool) {
+func (o *FipeHistoryResult) GetModelOk() (*string, bool) {
 	if o == nil || IsNil(o.Model) {
 		return nil, false
 	}
@@ -140,7 +105,7 @@ func (o *FipeResult) GetModelOk() (*string, bool) {
 }
 
 // HasModel returns a boolean if a field has been set.
-func (o *FipeResult) HasModel() bool {
+func (o *FipeHistoryResult) HasModel() bool {
 	if o != nil && !IsNil(o.Model) {
 		return true
 	}
@@ -149,12 +114,12 @@ func (o *FipeResult) HasModel() bool {
 }
 
 // SetModel gets a reference to the given string and assigns it to the Model field.
-func (o *FipeResult) SetModel(v string) {
+func (o *FipeHistoryResult) SetModel(v string) {
 	o.Model = &v
 }
 
 // GetModelYear returns the ModelYear field value if set, zero value otherwise.
-func (o *FipeResult) GetModelYear() int32 {
+func (o *FipeHistoryResult) GetModelYear() int32 {
 	if o == nil || IsNil(o.ModelYear) {
 		var ret int32
 		return ret
@@ -164,7 +129,7 @@ func (o *FipeResult) GetModelYear() int32 {
 
 // GetModelYearOk returns a tuple with the ModelYear field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetModelYearOk() (*int32, bool) {
+func (o *FipeHistoryResult) GetModelYearOk() (*int32, bool) {
 	if o == nil || IsNil(o.ModelYear) {
 		return nil, false
 	}
@@ -172,7 +137,7 @@ func (o *FipeResult) GetModelYearOk() (*int32, bool) {
 }
 
 // HasModelYear returns a boolean if a field has been set.
-func (o *FipeResult) HasModelYear() bool {
+func (o *FipeHistoryResult) HasModelYear() bool {
 	if o != nil && !IsNil(o.ModelYear) {
 		return true
 	}
@@ -181,12 +146,12 @@ func (o *FipeResult) HasModelYear() bool {
 }
 
 // SetModelYear gets a reference to the given int32 and assigns it to the ModelYear field.
-func (o *FipeResult) SetModelYear(v int32) {
+func (o *FipeHistoryResult) SetModelYear(v int32) {
 	o.ModelYear = &v
 }
 
 // GetFuel returns the Fuel field value if set, zero value otherwise.
-func (o *FipeResult) GetFuel() string {
+func (o *FipeHistoryResult) GetFuel() string {
 	if o == nil || IsNil(o.Fuel) {
 		var ret string
 		return ret
@@ -196,7 +161,7 @@ func (o *FipeResult) GetFuel() string {
 
 // GetFuelOk returns a tuple with the Fuel field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetFuelOk() (*string, bool) {
+func (o *FipeHistoryResult) GetFuelOk() (*string, bool) {
 	if o == nil || IsNil(o.Fuel) {
 		return nil, false
 	}
@@ -204,7 +169,7 @@ func (o *FipeResult) GetFuelOk() (*string, bool) {
 }
 
 // HasFuel returns a boolean if a field has been set.
-func (o *FipeResult) HasFuel() bool {
+func (o *FipeHistoryResult) HasFuel() bool {
 	if o != nil && !IsNil(o.Fuel) {
 		return true
 	}
@@ -213,12 +178,12 @@ func (o *FipeResult) HasFuel() bool {
 }
 
 // SetFuel gets a reference to the given string and assigns it to the Fuel field.
-func (o *FipeResult) SetFuel(v string) {
+func (o *FipeHistoryResult) SetFuel(v string) {
 	o.Fuel = &v
 }
 
 // GetCodeFipe returns the CodeFipe field value if set, zero value otherwise.
-func (o *FipeResult) GetCodeFipe() string {
+func (o *FipeHistoryResult) GetCodeFipe() string {
 	if o == nil || IsNil(o.CodeFipe) {
 		var ret string
 		return ret
@@ -228,7 +193,7 @@ func (o *FipeResult) GetCodeFipe() string {
 
 // GetCodeFipeOk returns a tuple with the CodeFipe field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetCodeFipeOk() (*string, bool) {
+func (o *FipeHistoryResult) GetCodeFipeOk() (*string, bool) {
 	if o == nil || IsNil(o.CodeFipe) {
 		return nil, false
 	}
@@ -236,7 +201,7 @@ func (o *FipeResult) GetCodeFipeOk() (*string, bool) {
 }
 
 // HasCodeFipe returns a boolean if a field has been set.
-func (o *FipeResult) HasCodeFipe() bool {
+func (o *FipeHistoryResult) HasCodeFipe() bool {
 	if o != nil && !IsNil(o.CodeFipe) {
 		return true
 	}
@@ -245,44 +210,12 @@ func (o *FipeResult) HasCodeFipe() bool {
 }
 
 // SetCodeFipe gets a reference to the given string and assigns it to the CodeFipe field.
-func (o *FipeResult) SetCodeFipe(v string) {
+func (o *FipeHistoryResult) SetCodeFipe(v string) {
 	o.CodeFipe = &v
 }
 
-// GetReferenceMonth returns the ReferenceMonth field value if set, zero value otherwise.
-func (o *FipeResult) GetReferenceMonth() string {
-	if o == nil || IsNil(o.ReferenceMonth) {
-		var ret string
-		return ret
-	}
-	return *o.ReferenceMonth
-}
-
-// GetReferenceMonthOk returns a tuple with the ReferenceMonth field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *FipeResult) GetReferenceMonthOk() (*string, bool) {
-	if o == nil || IsNil(o.ReferenceMonth) {
-		return nil, false
-	}
-	return o.ReferenceMonth, true
-}
-
-// HasReferenceMonth returns a boolean if a field has been set.
-func (o *FipeResult) HasReferenceMonth() bool {
-	if o != nil && !IsNil(o.ReferenceMonth) {
-		return true
-	}
-
-	return false
-}
-
-// SetReferenceMonth gets a reference to the given string and assigns it to the ReferenceMonth field.
-func (o *FipeResult) SetReferenceMonth(v string) {
-	o.ReferenceMonth = &v
-}
-
 // GetVehicleType returns the VehicleType field value if set, zero value otherwise.
-func (o *FipeResult) GetVehicleType() int32 {
+func (o *FipeHistoryResult) GetVehicleType() int32 {
 	if o == nil || IsNil(o.VehicleType) {
 		var ret int32
 		return ret
@@ -292,7 +225,7 @@ func (o *FipeResult) GetVehicleType() int32 {
 
 // GetVehicleTypeOk returns a tuple with the VehicleType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetVehicleTypeOk() (*int32, bool) {
+func (o *FipeHistoryResult) GetVehicleTypeOk() (*int32, bool) {
 	if o == nil || IsNil(o.VehicleType) {
 		return nil, false
 	}
@@ -300,7 +233,7 @@ func (o *FipeResult) GetVehicleTypeOk() (*int32, bool) {
 }
 
 // HasVehicleType returns a boolean if a field has been set.
-func (o *FipeResult) HasVehicleType() bool {
+func (o *FipeHistoryResult) HasVehicleType() bool {
 	if o != nil && !IsNil(o.VehicleType) {
 		return true
 	}
@@ -309,12 +242,12 @@ func (o *FipeResult) HasVehicleType() bool {
 }
 
 // SetVehicleType gets a reference to the given int32 and assigns it to the VehicleType field.
-func (o *FipeResult) SetVehicleType(v int32) {
+func (o *FipeHistoryResult) SetVehicleType(v int32) {
 	o.VehicleType = &v
 }
 
 // GetFuelAcronym returns the FuelAcronym field value if set, zero value otherwise.
-func (o *FipeResult) GetFuelAcronym() string {
+func (o *FipeHistoryResult) GetFuelAcronym() string {
 	if o == nil || IsNil(o.FuelAcronym) {
 		var ret string
 		return ret
@@ -324,7 +257,7 @@ func (o *FipeResult) GetFuelAcronym() string {
 
 // GetFuelAcronymOk returns a tuple with the FuelAcronym field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FipeResult) GetFuelAcronymOk() (*string, bool) {
+func (o *FipeHistoryResult) GetFuelAcronymOk() (*string, bool) {
 	if o == nil || IsNil(o.FuelAcronym) {
 		return nil, false
 	}
@@ -332,7 +265,7 @@ func (o *FipeResult) GetFuelAcronymOk() (*string, bool) {
 }
 
 // HasFuelAcronym returns a boolean if a field has been set.
-func (o *FipeResult) HasFuelAcronym() bool {
+func (o *FipeHistoryResult) HasFuelAcronym() bool {
 	if o != nil && !IsNil(o.FuelAcronym) {
 		return true
 	}
@@ -341,11 +274,43 @@ func (o *FipeResult) HasFuelAcronym() bool {
 }
 
 // SetFuelAcronym gets a reference to the given string and assigns it to the FuelAcronym field.
-func (o *FipeResult) SetFuelAcronym(v string) {
+func (o *FipeHistoryResult) SetFuelAcronym(v string) {
 	o.FuelAcronym = &v
 }
 
-func (o FipeResult) MarshalJSON() ([]byte, error) {
+// GetPriceHistory returns the PriceHistory field value if set, zero value otherwise.
+func (o *FipeHistoryResult) GetPriceHistory() []HistoryEntry {
+	if o == nil || IsNil(o.PriceHistory) {
+		var ret []HistoryEntry
+		return ret
+	}
+	return o.PriceHistory
+}
+
+// GetPriceHistoryOk returns a tuple with the PriceHistory field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FipeHistoryResult) GetPriceHistoryOk() ([]HistoryEntry, bool) {
+	if o == nil || IsNil(o.PriceHistory) {
+		return nil, false
+	}
+	return o.PriceHistory, true
+}
+
+// HasPriceHistory returns a boolean if a field has been set.
+func (o *FipeHistoryResult) HasPriceHistory() bool {
+	if o != nil && !IsNil(o.PriceHistory) {
+		return true
+	}
+
+	return false
+}
+
+// SetPriceHistory gets a reference to the given []HistoryEntry and assigns it to the PriceHistory field.
+func (o *FipeHistoryResult) SetPriceHistory(v []HistoryEntry) {
+	o.PriceHistory = v
+}
+
+func (o FipeHistoryResult) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -353,11 +318,8 @@ func (o FipeResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o FipeResult) ToMap() (map[string]interface{}, error) {
+func (o FipeHistoryResult) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Price) {
-		toSerialize["price"] = o.Price
-	}
 	if !IsNil(o.Brand) {
 		toSerialize["brand"] = o.Brand
 	}
@@ -373,50 +335,50 @@ func (o FipeResult) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CodeFipe) {
 		toSerialize["codeFipe"] = o.CodeFipe
 	}
-	if !IsNil(o.ReferenceMonth) {
-		toSerialize["referenceMonth"] = o.ReferenceMonth
-	}
 	if !IsNil(o.VehicleType) {
 		toSerialize["vehicleType"] = o.VehicleType
 	}
 	if !IsNil(o.FuelAcronym) {
 		toSerialize["fuelAcronym"] = o.FuelAcronym
 	}
+	if !IsNil(o.PriceHistory) {
+		toSerialize["priceHistory"] = o.PriceHistory
+	}
 	return toSerialize, nil
 }
 
-type NullableFipeResult struct {
-	value *FipeResult
+type NullableFipeHistoryResult struct {
+	value *FipeHistoryResult
 	isSet bool
 }
 
-func (v NullableFipeResult) Get() *FipeResult {
+func (v NullableFipeHistoryResult) Get() *FipeHistoryResult {
 	return v.value
 }
 
-func (v *NullableFipeResult) Set(val *FipeResult) {
+func (v *NullableFipeHistoryResult) Set(val *FipeHistoryResult) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableFipeResult) IsSet() bool {
+func (v NullableFipeHistoryResult) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableFipeResult) Unset() {
+func (v *NullableFipeHistoryResult) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableFipeResult(val *FipeResult) *NullableFipeResult {
-	return &NullableFipeResult{value: val, isSet: true}
+func NewNullableFipeHistoryResult(val *FipeHistoryResult) *NullableFipeHistoryResult {
+	return &NullableFipeHistoryResult{value: val, isSet: true}
 }
 
-func (v NullableFipeResult) MarshalJSON() ([]byte, error) {
+func (v NullableFipeHistoryResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableFipeResult) UnmarshalJSON(src []byte) error {
+func (v *NullableFipeHistoryResult) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

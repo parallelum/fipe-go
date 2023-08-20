@@ -10,10 +10,10 @@ info:
     \ internamente, sem sobrecarregar o Web Service da Fipe, evitando assim bloqueios\
     \ por múltiplos acessos. \n\n A API está online desde 2015 e totalmente gratuí\
     ta. Gostaria que ele continuasse gratuíta? O que acha de me pagar uma cerveja?\
-    \ \U0001f37a \n\n [![Make a donation](https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QUPMYWH6XAC5G)\
-    \ \n ## Available SDKs\n * [Fipe Go SDK](https://pkg.go.dev/github.com/parallelum/fipe-go)\n\
-    \ * [Fipe .NetCore Nuget SDK](https://www.nuget.org/packages/Br.Com.Parallelum.Fipe/)\n\
-    \ * [Fipe Javascript SDK](https://github.com/deividfortuna/fipe-promise)\n "
+    \ 🍺 \n\n [![Make a donation](https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QUPMYWH6XAC5G)\
+    \ \n ### Fipe API SDKs\n - [Fipe Go SDK](https://pkg.go.dev/github.com/parallelum/fipe-go)\n\
+    \ - [Fipe .NetCore Nuget SDK](https://www.nuget.org/packages/Br.Com.Parallelum.Fipe/)\n\
+    \ - [Fipe Javascript SDK](https://github.com/deividfortuna/fipe-promise)\n "
   license:
     name: MIT
     url: https://github.com/deividfortuna/fipe/blob/master/LICENSE.md
@@ -160,7 +160,7 @@ paths:
         "404":
           content: {}
           description: Not found
-      summary: Years for model
+      summary: Years by model
       tags:
       - Fipe
   /{vehicleType}/brands/{brandId}/models/{modelId}/years/{yearId}:
@@ -227,6 +227,134 @@ paths:
           content: {}
           description: Not found
       summary: Fipe info
+      tags:
+      - Fipe
+  /{vehicleType}/{fipeCode}/years:
+    get:
+      description: Returns years available for vehicle by fipe code
+      operationId: GetYearsByFipeCode
+      parameters:
+      - description: Type of vehicle
+        example: cars
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      - description: Fipe internal reference code
+        example: 004278-1
+        explode: false
+        in: path
+        name: fipeCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/NamedCode'
+                type: array
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Years by Fipe code
+      tags:
+      - Fipe
+  /{vehicleType}/{fipeCode}/years/{yearId}:
+    get:
+      description: Returns the Fipe information for the vehicle (price estimation)
+      operationId: GetInfoByFipeCode
+      parameters:
+      - description: Type of vehicle
+        example: cars
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      - description: Fipe internal reference code
+        example: 004278-1
+        explode: false
+        in: path
+        name: fipeCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Year for the vehicle
+        example: 2005-1
+        explode: false
+        in: path
+        name: yearId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FipeResult'
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Fipe info by Fipe code
+      tags:
+      - Fipe
+  /{vehicleType}/{fipeCode}/years/{yearId}/history:
+    get:
+      description: Returns the price history for the vehicle (price estimation)
+      operationId: GetHistoryByFipeCode
+      parameters:
+      - description: Type of vehicle
+        example: cars
+        explode: false
+        in: path
+        name: vehicleType
+        required: true
+        schema:
+          $ref: '#/components/schemas/VehiclesType'
+        style: simple
+      - description: Fipe internal reference code
+        example: 004278-1
+        explode: false
+        in: path
+        name: fipeCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Year for the vehicle
+        example: 2005-1
+        explode: false
+        in: path
+        name: yearId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FipeHistoryResult'
+          description: Ok
+        "404":
+          content: {}
+          description: Not found
+      summary: Fipe price history by Fipe code
       tags:
       - Fipe
 components:
@@ -297,5 +425,63 @@ components:
         code:
           type: string
         month:
+          type: string
+      type: object
+    FipeHistoryResult:
+      example:
+        fuelAcronym: fuelAcronym
+        fuel: fuel
+        codeFipe: codeFipe
+        model: model
+        modelYear: 0
+        brand: brand
+        vehicleType: 6
+        priceHistory:
+        - reference: reference
+          month: month
+          price: price
+        - reference: reference
+          month: month
+          price: price
+      properties:
+        brand:
+          description: Brand of the vehicle
+          type: string
+        model:
+          description: Model of the vehicle
+          type: string
+        modelYear:
+          description: Year of vehicle production
+          format: int32
+          type: integer
+        fuel:
+          description: Fuel used by the vehicle
+          type: string
+        codeFipe:
+          description: Unique Fipe identifier
+          type: string
+        vehicleType:
+          description: Type of the vehicle
+          format: int32
+          type: integer
+        fuelAcronym:
+          description: Fuel acronym (eg. G)
+          type: string
+        priceHistory:
+          items:
+            $ref: '#/components/schemas/HistoryEntry'
+          type: array
+      type: object
+    HistoryEntry:
+      example:
+        reference: reference
+        month: month
+        price: price
+      properties:
+        price:
+          type: string
+        month:
+          type: string
+        reference:
           type: string
       type: object

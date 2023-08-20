@@ -1,7 +1,7 @@
 /*
 Fipe API
 
-API de Consulta Tabela FIPE fornece preços médios de veículos no mercado nacional. Atualizada mensalmente com dados extraidos da tabela FIPE.    Essa API Fipe utiliza banco de dados próprio, onde todas as requisições acontecem internamente, sem sobrecarregar o Web Service da Fipe, evitando assim bloqueios por múltiplos acessos.    A API está online desde 2015 e totalmente gratuíta. Gostaria que ele continuasse gratuíta? O que acha de me pagar uma cerveja? 🍺    [![Make a donation](https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QUPMYWH6XAC5G)   ## Available SDKs  * [Fipe Go SDK](https://pkg.go.dev/github.com/parallelum/fipe-go)  * [Fipe .NetCore Nuget SDK](https://www.nuget.org/packages/Br.Com.Parallelum.Fipe/)  * [Fipe Javascript SDK](https://github.com/deividfortuna/fipe-promise)  
+API de Consulta Tabela FIPE fornece preços médios de veículos no mercado nacional. Atualizada mensalmente com dados extraidos da tabela FIPE.    Essa API Fipe utiliza banco de dados próprio, onde todas as requisições acontecem internamente, sem sobrecarregar o Web Service da Fipe, evitando assim bloqueios por múltiplos acessos.    A API está online desde 2015 e totalmente gratuíta. Gostaria que ele continuasse gratuíta? O que acha de me pagar uma cerveja? 🍺    [![Make a donation](https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QUPMYWH6XAC5G)   ### Fipe API SDKs  - [Fipe Go SDK](https://pkg.go.dev/github.com/parallelum/fipe-go)  - [Fipe .NetCore Nuget SDK](https://www.nuget.org/packages/Br.Com.Parallelum.Fipe/)  - [Fipe Javascript SDK](https://github.com/deividfortuna/fipe-promise)  
 
 API version: 2.0.0
 Contact: deividfortuna@gmail.com
@@ -14,6 +14,9 @@ package fipe
 import (
 	"encoding/json"
 )
+
+// checks if the Reference type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Reference{}
 
 // Reference struct for Reference
 type Reference struct {
@@ -40,7 +43,7 @@ func NewReferenceWithDefaults() *Reference {
 
 // GetCode returns the Code field value if set, zero value otherwise.
 func (o *Reference) GetCode() string {
-	if o == nil || o.Code == nil {
+	if o == nil || IsNil(o.Code) {
 		var ret string
 		return ret
 	}
@@ -50,7 +53,7 @@ func (o *Reference) GetCode() string {
 // GetCodeOk returns a tuple with the Code field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Reference) GetCodeOk() (*string, bool) {
-	if o == nil || o.Code == nil {
+	if o == nil || IsNil(o.Code) {
 		return nil, false
 	}
 	return o.Code, true
@@ -58,7 +61,7 @@ func (o *Reference) GetCodeOk() (*string, bool) {
 
 // HasCode returns a boolean if a field has been set.
 func (o *Reference) HasCode() bool {
-	if o != nil && o.Code != nil {
+	if o != nil && !IsNil(o.Code) {
 		return true
 	}
 
@@ -72,7 +75,7 @@ func (o *Reference) SetCode(v string) {
 
 // GetMonth returns the Month field value if set, zero value otherwise.
 func (o *Reference) GetMonth() string {
-	if o == nil || o.Month == nil {
+	if o == nil || IsNil(o.Month) {
 		var ret string
 		return ret
 	}
@@ -82,7 +85,7 @@ func (o *Reference) GetMonth() string {
 // GetMonthOk returns a tuple with the Month field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Reference) GetMonthOk() (*string, bool) {
-	if o == nil || o.Month == nil {
+	if o == nil || IsNil(o.Month) {
 		return nil, false
 	}
 	return o.Month, true
@@ -90,7 +93,7 @@ func (o *Reference) GetMonthOk() (*string, bool) {
 
 // HasMonth returns a boolean if a field has been set.
 func (o *Reference) HasMonth() bool {
-	if o != nil && o.Month != nil {
+	if o != nil && !IsNil(o.Month) {
 		return true
 	}
 
@@ -103,14 +106,22 @@ func (o *Reference) SetMonth(v string) {
 }
 
 func (o Reference) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Code != nil {
-		toSerialize["code"] = o.Code
-	}
-	if o.Month != nil {
-		toSerialize["month"] = o.Month
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Reference) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Code) {
+		toSerialize["code"] = o.Code
+	}
+	if !IsNil(o.Month) {
+		toSerialize["month"] = o.Month
+	}
+	return toSerialize, nil
 }
 
 type NullableReference struct {
